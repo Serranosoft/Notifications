@@ -9,9 +9,9 @@ import fetchPhrases from '../utils/fetchPhrases';
 export default function Home() {
 
     // Array de frases.
-    const [arr, setArr] = useState([]);
+    const [phrasesArr, setPhrasesArr] = useState([]);
     // Cantidad de elementos del array.
-    const [arrLength, setArrLength] = useState(0);
+    const [phrasesLength, setPhrasesLength] = useState(0);
     // Cantidad de frases leídas, también sirve como el índice del array para renderizar la frase
     const [phrasesReaded, setPhrasesReaded] = useState(0);
     // Longitud de la base de datos
@@ -21,14 +21,14 @@ export default function Home() {
 
     useEffect(() => {
         fetchPhrases.getPhrasesLength().then((length) => dbLength.current = length);
-        fetchPhrases.getPhrases(arr, setArr, setArrLength, arrLength);
+        fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength);
     }, [])
 
     useEffect(() => {
         // Cada 3 frases leidas, carga otras 4 en el array
-        if (arr.length > 0) {
-            if (phrasesReaded === arrLength - 1) {
-                fetchPhrases.getPhrases(arr, setArr, setArrLength, arrLength);
+        if (phrasesArr.length > 0) {
+            if (phrasesReaded === phrasesLength - 1) {
+                fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength);
             }
         }
     }, [phrasesReaded])
@@ -72,7 +72,7 @@ export default function Home() {
                     <Animated.View style={[animatedStyle]} collapsable={false}>
                         <Text style={{ width: 200, textAlign: "center" }}>
                             {
-                                arr[phrasesReaded] && arr[phrasesReaded].phrase
+                                phrasesArr[phrasesReaded] && phrasesArr[phrasesReaded].phrase
                             }
                         </Text>
                     </Animated.View>
