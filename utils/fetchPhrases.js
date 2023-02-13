@@ -2,18 +2,18 @@ import { supabase } from "../src/supabaseClient"
 
 export default class fetchPhrases {
     
-    static async getPhrasesLength() {
+    static async getPhrasesLength(category) {
         const { data, count } =
             await supabase
-                .from("test")
+                .from(category ? category : "All")
                 .select('*', { count: 'exact' })
     
         return count;
     }
     
-    static async getPhrases(arr, setArr, setArrLength, arrLength) {
+    static async getPhrases(arr, setArr, setArrLength, arrLength, category) {
         await supabase
-            .from('test')
+            .from(category ? category : "All")
             .select("phrase")
             .range(arrLength, arrLength + 3)
             .then((res) => {

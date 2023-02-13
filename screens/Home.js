@@ -6,6 +6,7 @@ import Animated from 'react-native-reanimated';
 import { Dimensions } from 'react-native';
 import fetchPhrases from '../utils/fetchPhrases';
 import { BackgroundModal } from '../utils/backgroundModal';
+import { CategoryModal } from '../utils/categoryModal';
 
 export default function Home() {
 
@@ -20,24 +21,38 @@ export default function Home() {
     // Posición del elemento para animarlo
     const position = useSharedValue(0);
 
-    // Modal de categorías
-    // const categoryModal = useRef(null);
+    // Modals
     const [bgModalVisible, setBgModalVisible] = useState(false)
     const [backgroundHome, setBackgroundHome] = useState("https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/background1.jpg");
+    
+    const [catModalVisible, setCatModalVisible] = useState(false)
+    const [category, setCategory] = useState(null);
 
     useEffect(() => {
-        fetchPhrases.getPhrasesLength().then((length) => dbLength.current = length);
-        fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength);
-    }, [])
+        // este entra en bucle infinito.
+        if (phrasesArr.length < 1) {
+            fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
+            fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
+        }
+    }, [phrasesArr])
 
     useEffect(() => {
         // Cada 3 frases leidas, carga otras 4 en el array
         if (phrasesArr.length > 0) {
             if (phrasesReaded === phrasesLength - 1) {
-                fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength);
+                fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
             }
         }
     }, [phrasesReaded])
+
+    useEffect(() => {
+        if (category !== null) {
+            fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
+            setPhrasesArr([]);
+            setPhrasesLength(0);
+            setPhrasesReaded(0);
+        }
+    }, [category])
 
     const tap = Gesture.Pan().runOnJS(true)
         .activeOffsetY([60, 60])
@@ -71,16 +86,16 @@ export default function Home() {
         width: "75%"
     }));
 
-
     return (
         <ImageBackground source={{ uri: backgroundHome }} style={styles.imageBg}>
             <BackgroundModal setBgModalVisible={setBgModalVisible} bgModalVisible={bgModalVisible} setBackgroundHome={setBackgroundHome} />
+            <CategoryModal setCatModalVisible={setCatModalVisible} catModalVisible={catModalVisible} setCategory={setCategory} />
             <GestureDetector gesture={tap}>
                 <View style={styles.animatedView}>
                     <Animated.View style={[animatedStyle]} collapsable={false}>
                         <Text style={styles.animatedText}>
                             {
-                                phrasesArr[phrasesReaded] && phrasesArr[phrasesReaded].phrase
+                                phrasesArr.length > 0 && phrasesArr[phrasesReaded] && phrasesArr[phrasesReaded].phrase
                             }
                         </Text>
                     </Animated.View>
@@ -88,6 +103,9 @@ export default function Home() {
             </GestureDetector>
             <TouchableOpacity style={{ position: "absolute", top: "5%", left: "5%" }} onPress={() => setBgModalVisible(true)}>
                 <Text style={styles.button}>Cambiar fondo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ position: "absolute", top: "15%", left: "5%" }} onPress={() => setCatModalVisible(true)}>
+                <Text style={styles.button}>Elegir categoría</Text>
             </TouchableOpacity>
         </ImageBackground>
     )
