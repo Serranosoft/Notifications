@@ -28,8 +28,11 @@ export default function Home() {
     const [catModalVisible, setCatModalVisible] = useState(false)
     const [category, setCategory] = useState(null);
 
+    // Practice Mode
+    const [practiceMode, setPracticeMode] = useState(false);
+    const practiceModeInterval = useRef(null);
+
     useEffect(() => {
-        // este entra en bucle infinito.
         if (phrasesArr.length < 1) {
             fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
             fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
@@ -53,6 +56,25 @@ export default function Home() {
             setPhrasesReaded(0);
         }
     }, [category])
+
+    function loadPracticeMode() {
+        if (!practiceMode) {
+            setPracticeMode(true);
+    
+            practiceModeInterval.current = setInterval(() => {
+                position.value = withTiming(-Dimensions.get("window").height, { duration: 400, easing: Easing.ease });
+                setTimeout(() => {
+                    if (phrasesReaded < dbLength.current - 1) {
+                        setPhrasesReaded(() => phrasesReaded + 1);
+                        position.value = Dimensions.get("window").height;
+                        position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
+                    }
+    
+                }, 250)
+    
+            }, 5000)
+        }
+    }
 
     const tap = Gesture.Pan().runOnJS(true)
         .activeOffsetY([60, 60])
@@ -106,6 +128,9 @@ export default function Home() {
             </TouchableOpacity>
             <TouchableOpacity style={{ position: "absolute", top: "15%", left: "5%" }} onPress={() => setCatModalVisible(true)}>
                 <Text style={styles.button}>Elegir categoría</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ position: "absolute", top: "25%", left: "5%" }} onPress={() => loadPracticeMode()}>
+                <Text style={styles.button}>Practicar</Text>
             </TouchableOpacity>
         </ImageBackground>
     )
