@@ -12,7 +12,6 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
 
     useEffect(() => {
         if (backgroundImgs.length < 1) {
-            console.log("Cargar.");
             async function fetchBackgrounds() {
                 await supabase.storage.from("backgrounds").list(null, {}).then((res) => {
                     res.data.forEach(img => {
@@ -23,7 +22,6 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
     
             async function fetchBackgroundsUrls(imgName) {
                 const {data, error} = await supabase.storage.from("backgrounds").getPublicUrl(`${imgName}`);
-                console.log(data.publicUrl);
                 setBackgroundImgs([...backgroundImgs, backgroundImgs.push(data.publicUrl)]);
             }
             fetchBackgrounds();
@@ -36,7 +34,6 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
             transparent={true}
             visible={bgModalVisible}
             onRequestClose={() => {
-                // setBackgroundImgs([]);
                 setBgModalVisible(!bgModalVisible);
             }}>
             <View style={styles.centeredView}>
@@ -50,7 +47,6 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
                                     // Settea una imagen a la home
                                     setBackgroundHome(item);
                                     setChosed(true);
-                                    console.log(i);
                                 }}>
                                     <Image style={styles.image} key={i} source={{uri: `${item}`}} />
                                 </TouchableOpacity>
