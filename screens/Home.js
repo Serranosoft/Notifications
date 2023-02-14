@@ -7,6 +7,7 @@ import { Dimensions } from 'react-native';
 import fetchPhrases from '../utils/fetchPhrases';
 import { BackgroundModal } from '../utils/backgroundModal';
 import { CategoryModal } from '../utils/categoryModal';
+import PracticeMode from '../utils/practiceMode';
 
 export default function Home() {
 
@@ -57,25 +58,6 @@ export default function Home() {
         }
     }, [category])
 
-    function loadPracticeMode() {
-        if (!practiceMode) {
-            setPracticeMode(true);
-    
-            practiceModeInterval.current = setInterval(() => {
-                position.value = withTiming(-Dimensions.get("window").height, { duration: 400, easing: Easing.ease });
-                setTimeout(() => {
-                    if (phrasesReaded < dbLength.current - 1) {
-                        setPhrasesReaded(() => phrasesReaded + 1);
-                        position.value = Dimensions.get("window").height;
-                        position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
-                    }
-    
-                }, 250)
-    
-            }, 5000)
-        }
-    }
-
     const tap = Gesture.Pan().runOnJS(true)
         .activeOffsetY([60, 60])
         .onUpdate((e) => {
@@ -112,6 +94,7 @@ export default function Home() {
         <ImageBackground source={{ uri: backgroundHome }} style={styles.imageBg}>
             <BackgroundModal setBgModalVisible={setBgModalVisible} bgModalVisible={bgModalVisible} setBackgroundHome={setBackgroundHome} />
             <CategoryModal setCatModalVisible={setCatModalVisible} catModalVisible={catModalVisible} setCategory={setCategory} />
+            <PracticeMode setPhrasesReaded={setPhrasesReaded} phrasesReaded={phrasesReaded} practiceMode={practiceMode} practiceModeInterval={practiceModeInterval} position={position} />
             <GestureDetector gesture={tap}>
                 <View style={styles.animatedView}>
                     <Animated.View style={[animatedStyle]} collapsable={false}>
@@ -129,7 +112,7 @@ export default function Home() {
             <TouchableOpacity style={{ position: "absolute", top: "15%", left: "5%" }} onPress={() => setCatModalVisible(true)}>
                 <Text style={styles.button}>Elegir categoría</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ position: "absolute", top: "25%", left: "5%" }} onPress={() => loadPracticeMode()}>
+            <TouchableOpacity style={{ position: "absolute", top: "25%", left: "5%" }} onPress={() => setPracticeMode(true)}>
                 <Text style={styles.button}>Practicar</Text>
             </TouchableOpacity>
         </ImageBackground>
