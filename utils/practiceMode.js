@@ -4,7 +4,8 @@ import { Easing, withDelay, withTiming } from "react-native-reanimated";
 
 export default function PracticeMode({ practiceMode, setPracticeMode, position, phrasesReaded, setPhrasesReaded }) {
 
-    const PHRASES_QTY = 20;
+    const PHRASES_QTY = 4;
+    const PHRASES_READED = useRef(0);
 
     // Estado del modo práctica en activo o no
     const [active, setActive] = useState(false);
@@ -12,12 +13,12 @@ export default function PracticeMode({ practiceMode, setPracticeMode, position, 
     const practiceModeInterval = useRef(null);
 
     useEffect(() => {
-        if (phrasesReaded === PHRASES_QTY) {
+        if (PHRASES_READED.current === PHRASES_QTY) {
             setTimeout(() => {
                 clearInterval(practiceModeInterval.current);
                 practiceModeInterval.current = null;
+                PHRASES_READED.current = 0;
                 setPracticeMode(false);
-                setPhrasesReaded(0);
             }, 1000)
         }
     }, [phrasesReaded])
@@ -32,6 +33,7 @@ export default function PracticeMode({ practiceMode, setPracticeMode, position, 
                     position.value = withTiming(-Dimensions.get("window").height, { duration: 400, easing: Easing.ease });
                     setTimeout(() => {
                         setPhrasesReaded((phrasesReaded) => phrasesReaded + 1);
+                        PHRASES_READED.current = PHRASES_READED.current + 1;
                         position.value = Dimensions.get("window").height;
                         position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
                     }, 250)
