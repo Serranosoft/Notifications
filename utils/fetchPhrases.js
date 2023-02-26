@@ -13,9 +13,9 @@ export default class fetchPhrases {
     
     static async getPhrases(arr, setArr, setArrLength, arrLength, category) {
         await supabase
-            .from(category ? category : "All")
+            .from(category ? category : "random_all")
             .select("phrase")
-            .range(arrLength, arrLength + 3)
+            .range(arrLength, arrLength + 10)
             .then((res) => {
                 if (arr.length < 1) {
                     setArr(res.data);
@@ -24,7 +24,7 @@ export default class fetchPhrases {
                 }
     
             })
-        setArrLength(() => arrLength + 4);
+        setArrLength(() => arrLength + 11);
     }
 
 }

@@ -8,6 +8,8 @@ import fetchPhrases from '../utils/fetchPhrases';
 import { BackgroundModal } from '../utils/backgroundModal';
 import { CategoryModal } from '../utils/categoryModal';
 import PracticeMode from '../utils/practiceMode';
+import Menu from '../src/components/Menu';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function Home() {
 
@@ -21,18 +23,17 @@ export default function Home() {
     let dbLength = useRef(0);
     // Posición del elemento para animarlo
     const position = useSharedValue(0);
-
+    // Categoría de la pregunta
+    const [category, setCategory] = useState(null);
+    // Background
+    const [backgroundHome, setBackgroundHome] = useState("https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/background1.jpg");
     // Modals
     const [bgModalVisible, setBgModalVisible] = useState(false)
-    const [backgroundHome, setBackgroundHome] = useState("https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/background1.jpg");
-    
     const [catModalVisible, setCatModalVisible] = useState(false)
-    const [category, setCategory] = useState(null);
-
     // Practice Mode
     const [practiceMode, setPracticeMode] = useState(false);
-    const practiceModeInterval = useRef(null);
 
+    // Cuando no existan frases, se obtiene la cantidad de frases de la categoría 'x' y obtiene el array de frases de esa categoría
     useEffect(() => {
         if (phrasesArr.length < 1) {
             fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
@@ -40,15 +41,16 @@ export default function Home() {
         }
     }, [phrasesArr])
 
+    // Cada 7 frases leidas, carga otras 10 en el array
     useEffect(() => {
-        // Cada 3 frases leidas, carga otras 4 en el array
         if (phrasesArr.length > 0) {
-            if (phrasesReaded === phrasesLength - 1) {
+            if (phrasesReaded === phrasesLength - 3) {
                 fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
             }
         }
     }, [phrasesReaded])
 
+    // Al cambiar de categoría, obtiene la longitud del array de las nuevas preguntas y resetea todas las variables
     useEffect(() => {
         if (category !== null) {
             fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
@@ -57,6 +59,7 @@ export default function Home() {
             setPhrasesReaded(0);
         }
     }, [category])
+
 
     const tap = Gesture.Pan().runOnJS(true)
         .activeOffsetY([60, 60])
@@ -84,50 +87,52 @@ export default function Home() {
                 }
             }, 250)
         })
-        
+
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{ translateY: position.value }],
         width: "75%"
     }));
 
     return (
-        <ImageBackground source={{ uri: backgroundHome }} style={styles.imageBg}>
-            <BackgroundModal setBgModalVisible={setBgModalVisible} bgModalVisible={bgModalVisible} setBackgroundHome={setBackgroundHome} />
-            <CategoryModal setCatModalVisible={setCatModalVisible} catModalVisible={catModalVisible} setCategory={setCategory} />
-            <PracticeMode setPhrasesReaded={setPhrasesReaded} phrasesReaded={phrasesReaded} practiceMode={practiceMode} practiceModeInterval={practiceModeInterval} position={position} />
-            <GestureDetector gesture={tap}>
-                <View style={styles.animatedView}>
-                    <Animated.View style={[animatedStyle]} collapsable={false}>
-                        <Text style={styles.animatedText}>
-                            {
-                                phrasesArr.length > 0 && phrasesArr[phrasesReaded] && phrasesArr[phrasesReaded].phrase
-                            }
-                        </Text>
-                    </Animated.View>
-                </View>
-            </GestureDetector>
-            <TouchableOpacity style={{ position: "absolute", top: "5%", left: "5%" }} onPress={() => setBgModalVisible(true)}>
-                <Text style={styles.button}>Cambiar fondo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ position: "absolute", top: "15%", left: "5%" }} onPress={() => setCatModalVisible(true)}>
-                <Text style={styles.button}>Elegir categoría</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ position: "absolute", top: "25%", left: "5%" }} onPress={() => setPracticeMode(true)}>
-                <Text style={styles.button}>Practicar</Text>
-            </TouchableOpacity>
-        </ImageBackground>
+        <>
+            <ImageBackground source={{ uri: backgroundHome }} style={styles.container}>
+                <GestureDetector gesture={tap}>
+                    <View style={styles.animatedView}>
+                        <Animated.View style={[animatedStyle]} collapsable={false}>
+                            <Text style={styles.animatedText}>
+                                {
+                                    phrasesArr.length > 0 && phrasesArr[phrasesReaded] && phrasesArr[phrasesReaded].phrase
+                                }
+                            </Text>
+                        </Animated.View>
+                    </View>
+                </GestureDetector>
+                <Menu {...{ practiceMode, setPracticeMode, bgModalVisible, setBgModalVisible, setCatModalVisible }} />
+            </ImageBackground>
+
+
+
+            {/* Modal para elegir imágen de fondo, bgModalVisible y setBgModalVisible para establecer visibilidad del modal y
+                            set backgroundHome para establecer la imagen de fondo */}
+            <BackgroundModal {...{ setBgModalVisible, bgModalVisible, setBackgroundHome }} />
+            {/* Modal para elegir categoría, catModalVisible y setCatModalVisible para establecer visibilidad del modal y setCategory
+                            para establecer la categoría actual. */}
+            <CategoryModal {...{ setCatModalVisible, catModalVisible, setCategory }} />
+            {/* Child component para establecer el modo práctica. */}
+            <PracticeMode {...{ setPracticeMode, practiceMode, position, phrasesReaded, setPhrasesReaded }} />
+        </>
     )
 }
 
 
 
 const styles = StyleSheet.create({
-    imageBg: {
-        flex: 1,
-        position: "relative"
+    container: {
+        width: wp("100%"),
+        height: hp("93%"),
     },
     animatedView: {
-        flex: 1,
+        height: "100%",
         justifyContent: "center",
         alignItems: "center"
     },
@@ -140,12 +145,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "white"
     },
-    button: {
-        paddingVertical: 8,
-        paddingHorizontal: 24,
-        backgroundColor: "lightblue",
-        color: "black",
-        fontSize: 20,
-        borderRadius: 100
-    }
+
 })

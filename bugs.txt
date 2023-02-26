@@ -1,0 +1,2 @@
+1. Cuando termina el practice mode, cambia de frase.
+    --> No debe cambiar de frase, se queda en esa frase y puedes volver atrás o seguir hacia adelante.

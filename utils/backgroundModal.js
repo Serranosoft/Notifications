@@ -6,7 +6,6 @@ import { supabase } from "../src/supabaseClient"
 
 export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgroundHome }) => {
 
-
     const [backgroundImgs, setBackgroundImgs] = useState([]);
     const [chosed, setChosed] = useState(false);    
 
