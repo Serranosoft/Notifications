@@ -12,8 +12,9 @@ export default class fetchPhrases {
     }
     
     static async getPhrases(arr, setArr, setArrLength, arrLength, category) {
+        console.log(category);
         await supabase
-            .from(category ? category : "random_all")
+            .from(category ? `random_${category.toLowerCase()}` : "random_all")
             .select("phrase")
             .range(arrLength, arrLength + 10)
             .then((res) => {
