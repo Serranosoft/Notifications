@@ -10,6 +10,7 @@ import { CategoryModal } from '../utils/categoryModal';
 import PracticeMode from '../utils/practiceMode';
 import Menu from '../src/components/Menu';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import LottieView from 'lottie-react-native';
 
 export default function Home() {
 
@@ -32,6 +33,8 @@ export default function Home() {
     const [catModalVisible, setCatModalVisible] = useState(false)
     // Practice Mode
     const [practiceMode, setPracticeMode] = useState(false);
+    // Referencia del lottie swipe para ocultarlo tras hacer swipe la primera vez
+    const [swipeVisible, setSwipeVisible] = useState(true);
 
     // Cuando no existan frases, se obtiene la cantidad de frases de la categoría 'x' y obtiene el array de frases de esa categoría
     useEffect(() => {
@@ -44,6 +47,7 @@ export default function Home() {
     // Cada 7 frases leidas, carga otras 10 en el array
     useEffect(() => {
         if (phrasesArr.length > 0) {
+            swipeVisible === true && setSwipeVisible(false);
             if (phrasesReaded === phrasesLength - 3) {
                 fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
             }
@@ -96,6 +100,10 @@ export default function Home() {
     return (
         <>
             <ImageBackground source={{ uri: backgroundHome }} style={styles.container}>
+                {swipeVisible && 
+                    <LottieView source={require("../assets/lottie/swipe.json")} style={styles.lottie} loop={true} autoPlay={true} />
+                }
+
                 <GestureDetector gesture={tap}>
                     <View style={styles.animatedView}>
                         <Animated.View style={[animatedStyle]} collapsable={false}>
@@ -130,6 +138,7 @@ const styles = StyleSheet.create({
     container: {
         width: wp("100%"),
         height: hp("93%"),
+        position: "relative"
     },
     animatedView: {
         height: "100%",
@@ -145,5 +154,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "white"
     },
-
+    lottie: {
+        width: 150,
+        height: 150,
+        position: "absolute",
+        top: "15%",
+        left: "40%",
+    }
 })
