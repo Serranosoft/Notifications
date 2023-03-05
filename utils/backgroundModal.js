@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Text, View, Modal, StyleSheet, Pressable, Image, Dimensions, TouchableOpacity } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { supabase } from "../src/supabaseClient"
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgroundHome }) => {
@@ -12,16 +13,18 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
     useEffect(() => {
         if (backgroundImgs.length < 1) {
             async function fetchBackgrounds() {
-                await supabase.storage.from("backgrounds").list(null, {}).then((res) => {
+                await supabase.storage.from("backgrounds").list("backgrounds", {}).then((res) => {
                     res.data.forEach(img => {
-                        fetchBackgroundsUrls(img.name)
+                        if (img && img.metadata.mimetype === "image/jpeg") {
+                            fetchBackgroundsUrls(img.name)
+                        }
                     })
                 });
             }
     
             async function fetchBackgroundsUrls(imgName) {
                 const {data, error} = await supabase.storage.from("backgrounds").getPublicUrl(`${imgName}`);
-                setBackgroundImgs([...backgroundImgs, backgroundImgs.push(data.publicUrl)]);
+                setBackgroundImgs(backgroundImgs => backgroundImgs.concat(data.publicUrl));
             }
             fetchBackgrounds();
         }
@@ -69,12 +72,10 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
 
 const styles = StyleSheet.create({
     centeredView: {
-        flex: 1,
+        width: wp("100%"),
+        height: hp("100%"),
         justifyContent: 'center',
         alignItems: 'center',
-        // marginTop: 22,
-        // width: "100%",
-        // height: "100%"
     },
     modalView: {
         margin: 20,
@@ -99,14 +100,10 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 20,
         paddingVertical: 10,
-        paddingHorizontal: 30,
+        paddingHorizontal: 50,
         elevation: 5,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
+        backgroundColor: "black",
+        alignSelf: "center"
     },
     buttonText: {
         color: 'white',

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Text, View, Modal, StyleSheet, Pressable, Image, Dimensions, TouchableOpacity } from "react-native";
+import { Text, View, Modal, StyleSheet, Pressable, Image, Dimensions, TouchableOpacity, ImageBackground } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { supabase } from "../src/supabaseClient"
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory }) => {
@@ -29,23 +30,22 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Elige una categoría</Text>
+                    <Text style={styles.modalTitle}>Elige una categoría</Text>
                     <FlatList
                         data={categories}
-                        columnWrapperStyle={{
-                            flexShrink: 1,
-                            alignItems: "center",
-                            justifyContent: "center"
-                        }}
                         numColumns={2}
+                        columnWrapperStyle={{
+                            flexGrow: 1,
+                        }}
                         renderItem= {({item, i}) => {
                             return (
-                                <TouchableOpacity style={{flex: 1}} onPress={() => {
+                                <TouchableOpacity style={styles.category} key={i} onPress={() => {
                                     setChosed(true);
                                     setCategory(item);
                                     setCatModalVisible(!catModalVisible);
                                 }}>
-                                    <View style={styles.category}>
+                                    <View>
+                                        <Image style={styles.image} resizeMode="cover" source={{ uri: `https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/categories/${item.replace(/\s+/g, '_')}.png?cache1` }} />
                                         <Text style={styles.categoryText}>{item}</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -57,7 +57,7 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
                     <TouchableOpacity
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => setCatModalVisible(!catModalVisible)}>
-                        <Text style={styles.buttonText}>{chosed ? "Aceptar" : "Cerrar"}</Text>
+                        <Text style={styles.buttonText}>Cerrar{/* {chosed ? "Aceptar" : "Cerrar"} */}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -69,15 +69,32 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
 
 const styles = StyleSheet.create({
     centeredView: {
-        flex: 1,
+        width: wp("100%"),
+        height: hp("100%"),
         justifyContent: 'center',
         alignItems: 'center',
     },
     modalView: {
-        margin: 20,
-        backgroundColor: 'white',
+        backgroundColor: '#fafafa',
         borderRadius: 20,
-        padding: 35,
+        padding: 12,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        width: "95%",
+        height: "75%",
+    },
+    modalTitle: {
+        marginBottom: 15,
+        textAlign: 'center',
+        fontSize: 18,
+    },
+    category: {
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -87,20 +104,30 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
         flex: 1,
-        width: "90%"
+        margin: 6,
+        backgroundColor: "white",
+        borderRadius: 16,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+    },
+    image: {
+        width: 128,
+        height: 128,
+        marginBottom: 8,
+        alignSelf: "center"
+    },
+    categoryText: {
+        fontSize: 14,
+        color: "black",
     },
     button: {
         marginTop: 20,
         borderRadius: 20,
         paddingVertical: 10,
-        paddingHorizontal: 30,
+        paddingHorizontal: 50,
         elevation: 5,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
+        backgroundColor: "black",
+        alignSelf: "center"
     },
     buttonText: {
         color: 'white',
@@ -108,24 +135,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 18,
     },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 18,
-    },
-    category: {
-        flex: 1 / 2,
-        height: 100,
-        backgroundColor: "trasparent",
-        marginHorizontal: 6,
-        marginVertical: 12,
-        borderColor: "lightgray",
-        borderWidth: 2,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    categoryText: {
-        fontSize: 18
-    }
 });
