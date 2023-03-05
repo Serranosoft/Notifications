@@ -68,28 +68,32 @@ export default function Home() {
     const tap = Gesture.Pan().runOnJS(true)
         .activeOffsetY([60, 60])
         .onUpdate((e) => {
-            position.value = e.translationY;
+            if (!practiceMode) {
+                position.value = e.translationY;
+            }
         })
         .onEnd((e) => {
-            position.value = withTiming(position.value * 10, { duration: 400, easing: Easing.ease });
-            if (e.translationY < 60 && e.translationY > -60) {
-                position.value = withTiming(0, { duration: 400, easing: Easing.ease });
-            }
-            setTimeout(() => {
-                if (e.translationY > 60) {
-                    if (phrasesReaded > 0) {
-                        setPhrasesReaded(() => phrasesReaded - 1);
-                    }
-                    position.value = -Dimensions.get("window").height;
-                    position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
-                } else if (e.translationY < -60) {
-                    if (phrasesReaded < dbLength.current - 1) {
-                        setPhrasesReaded(() => phrasesReaded + 1);
-                    }
-                    position.value = Dimensions.get("window").height;
-                    position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
+            if (!practiceMode) {
+                position.value = withTiming(position.value * 10, { duration: 400, easing: Easing.ease });
+                if (e.translationY < 60 && e.translationY > -60) {
+                    position.value = withTiming(0, { duration: 400, easing: Easing.ease });
                 }
-            }, 250)
+                setTimeout(() => {
+                    if (e.translationY > 60) {
+                        if (phrasesReaded > 0) {
+                            setPhrasesReaded(() => phrasesReaded - 1);
+                        }
+                        position.value = -Dimensions.get("window").height;
+                        position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
+                    } else if (e.translationY < -60) {
+                        if (phrasesReaded < dbLength.current - 1) {
+                            setPhrasesReaded(() => phrasesReaded + 1);
+                        }
+                        position.value = Dimensions.get("window").height;
+                        position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
+                    }
+                }, 250)
+            }
         })
 
     const animatedStyle = useAnimatedStyle(() => ({
@@ -104,7 +108,7 @@ export default function Home() {
                     <LottieView source={require("../assets/lottie/swipe.json")} style={styles.lottie} loop={true} autoPlay={true} />
                 }
 
-                <GestureDetector gesture={tap}>
+                <GestureDetector gesture={tap} enab>
                     <View style={styles.animatedView}>
                         <Animated.View style={[animatedStyle]} collapsable={false}>
                             <Text style={styles.animatedText}>
