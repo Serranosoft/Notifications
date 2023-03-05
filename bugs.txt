@@ -1,1 +1,1 @@
-No permitir hacer sliding durante el modo práctica
+Añadir modal de error informativo en los try 'catch'.

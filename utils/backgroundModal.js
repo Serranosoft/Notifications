@@ -3,7 +3,7 @@ import { Text, View, Modal, StyleSheet, Pressable, Image, Dimensions, TouchableO
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { supabase } from "../src/supabaseClient"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgroundHome }) => {
 
@@ -45,10 +45,15 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
                         data={backgroundImgs}
                         renderItem= {({item, i}) => {
                             return (
-                                <TouchableOpacity onPress={(e) => {
+                                <TouchableOpacity onPress={async (e) => {
                                     // Settea una imagen a la home
-                                    setBackgroundHome(item);
-                                    setChosed(true);
+                                    try {
+                                        setChosed(true);
+                                        setBackgroundHome(item);
+                                        await AsyncStorage.setItem("background", item)
+                                    } catch (e) {
+                                        // saving error
+                                    }
                                 }}>
                                     <Image style={styles.image} key={i} source={{uri: `${item}`}} />
                                 </TouchableOpacity>
@@ -59,7 +64,11 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
                     />
                     <TouchableOpacity
                         style={[styles.button, styles.buttonClose]}
-                        onPress={() => setBgModalVisible(!bgModalVisible)}>
+                        onPress={() => {
+                            
+                            setBgModalVisible(!bgModalVisible)
+                        
+                        }}>
                         <Text style={styles.buttonText}>{chosed ? "Aceptar" : "Cerrar"}</Text>
                     </TouchableOpacity>
                 </View>

@@ -11,6 +11,7 @@ import PracticeMode from '../utils/practiceMode';
 import Menu from '../src/components/Menu';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home() {
 
@@ -64,6 +65,21 @@ export default function Home() {
         }
     }, [category])
 
+    useEffect(async () => {
+        getBackgroundStorage();
+    }, [])
+
+    async function getBackgroundStorage() {
+        try {
+            const value = await AsyncStorage.getItem("background");
+            if (value !== null) {
+                setBackgroundHome(value);
+            }
+        } catch (e) {
+            // error reading value
+        }
+    }
+
 
     const tap = Gesture.Pan().runOnJS(true)
         .activeOffsetY([60, 60])
@@ -104,7 +120,7 @@ export default function Home() {
     return (
         <>
             <ImageBackground source={{ uri: backgroundHome }} style={styles.container}>
-                {swipeVisible && 
+                {swipeVisible &&
                     <LottieView source={require("../assets/lottie/swipe.json")} style={styles.lottie} loop={true} autoPlay={true} />
                 }
 
