@@ -10,6 +10,7 @@ import Background from '../src/presentational/Background';
 import PhraseContainer from '../src/container/PhraseContainer';
 import AsyncStorageContainer from '../src/container/AsyncStorageContainer';
 import Header from '../src/components/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home() {
 
@@ -27,6 +28,8 @@ export default function Home() {
     const [category, setCategory] = useState("Todas");
     // Background
     const [backgroundHome, setBackgroundHome] = useState("https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/background6.jpg");
+    // Favorites
+    const [favorites, setFavorites] = useState([]);
     // Modals
     const [bgModalVisible, setBgModalVisible] = useState(false)
     const [catModalVisible, setCatModalVisible] = useState(false)
@@ -63,18 +66,34 @@ export default function Home() {
         }
     }, [category])
 
+    async function checkIfFavoriteExists(phrase) {
+        if (!favorites.includes(phrase)) {
+            setFavorites(favorites => favorites.concat(phrase));
+        }
+    }
+
+    async function saveFavorite() {
+        await AsyncStorage.setItem("favorites", JSON.stringify(favorites));
+    }
+
+    useEffect(() => {
+        saveFavorite();
+
+        console.log(favorites);
+    }, [favorites])
+
     return (
         <>
             <Background image={{ uri: backgroundHome }} swipeVisible={swipeVisible}>
-                <Header {...{setBgModalVisible, practiceMode}} />
-                <PhraseContainer {...{practiceMode, position, setPhrasesReaded, phrasesReaded, dbLength, phrasesArr}} />
+                <Header {...{ setBgModalVisible, practiceMode }} />
+                <PhraseContainer {...{ practiceMode, position, setPhrasesReaded, phrasesReaded, dbLength, phrasesArr, checkIfFavoriteExists }} />
                 <Footer {...{ practiceMode, setPracticeMode, bgModalVisible, setBgModalVisible, setCatModalVisible, category }} />
             </Background>
 
             <BackgroundModal {...{ setBgModalVisible, bgModalVisible, setBackgroundHome }} />
             <CategoryModal {...{ setCatModalVisible, catModalVisible, setCategory }} />
             <PracticeMode {...{ setPracticeMode, practiceMode, position, phrasesReaded, setPhrasesReaded }} />
-            <AsyncStorageContainer {...{setBackgroundHome}} />
+            <AsyncStorageContainer {...{ setBackgroundHome, setFavorites }} />
         </>
     )
 }
