@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         height: "100%",
         justifyContent: "space-between",
         paddingHorizontal: 16,
-        backgroundColor: "rgba(250, 250, 250, 0.85)",
+        backgroundColor: "rgba(0,0,0,0.48)",
         borderRadius: 16,
     },
     touchableWrapper: {
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     },
     text: {
         marginLeft: 10,
+        color: "white"
     },
     icon: {
         width: 35,

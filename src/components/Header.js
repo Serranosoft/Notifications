@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     touchable: {
         paddingVertical: 6,
         paddingHorizontal: 16,
-        backgroundColor: "rgba(250, 250, 250, 0.85)",
+        backgroundColor: "rgba(0,0,0,0.48)",
         borderRadius: 16,
     },
     icon: {
