@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { BackHandler, Dimensions, StyleSheet, Text, View } from "react-native";
 import { Easing, withDelay, withTiming } from "react-native-reanimated";
 
 export default function PracticeMode({ practiceMode, setPracticeMode, position, phrasesReaded, setPhrasesReaded }) {
@@ -8,27 +8,26 @@ export default function PracticeMode({ practiceMode, setPracticeMode, position, 
     const PHRASES_READED = useRef(0);
 
     // Estado del modo práctica en activo o no
-    const [active, setActive] = useState(false);
+    const [delayScreen, setDelayScreen] = useState(false);
     // Referencia del intervalo para poder terminarlo cuando termine el modo práctica
     const practiceModeInterval = useRef(null);
+    const practiceModeTimeout = useRef(null);
 
     useEffect(() => {
         if (PHRASES_READED.current === PHRASES_QTY) {
             setTimeout(() => {
-                clearInterval(practiceModeInterval.current);
-                practiceModeInterval.current = null;
-                PHRASES_READED.current = 0;
-                setPracticeMode(false);
+                closePracticeMode();
             }, 1000)
         }
     }, [phrasesReaded])
 
     useEffect(() => {
+        changeBackHandler();
         practiceModeInterval.current = null;
         if (practiceMode) {
-            setActive(true);
-            setTimeout(() => {
-                setActive(false);
+            setDelayScreen(true);
+            practiceModeTimeout.current = setTimeout(() => {
+                setDelayScreen(false);
                 practiceModeInterval.current = setInterval(() => {
                     position.value = withTiming(-Dimensions.get("window").height, { duration: 400, easing: Easing.ease });
                     setTimeout(() => {
@@ -42,11 +41,32 @@ export default function PracticeMode({ practiceMode, setPracticeMode, position, 
         }
     }, [practiceMode])
 
+    function changeBackHandler() {
+        BackHandler.addEventListener('hardwareBackPress', function () {
+            if (practiceMode) {
+                closePracticeMode();
+                return true;
+            } else {
+                return false;
+            }
+        })
+    }
+
+    function closePracticeMode() {
+        setDelayScreen(false);
+        setPracticeMode(false);
+        clearInterval(practiceModeInterval.current);
+        clearTimeout(practiceModeTimeout.current)
+        practiceModeInterval.current = null;
+        PHRASES_READED.current = 0;
+
+    }
+
     return (
         // Hay que mostrar una pantalla intermediaria durante 5 segundos de transición
         <>
-            {active &&
-                <View style={active ? [styles.active, styles.container] : styles.container}>
+            {delayScreen &&
+                <View style={delayScreen ? [styles.active, styles.container] : styles.container}>
                     <Text style={styles.text}>Respira, lee e interioriza cada frase, tomate tu tiempo.</Text>
                 </View>
             }

@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgroundHome }) => {
 
     const [backgroundImgs, setBackgroundImgs] = useState([]);
-    const [chosed, setChosed] = useState(false);    
+    const [imgChosed, setImgChosed] = useState(0);
 
     useEffect(() => {
         if (backgroundImgs.length < 1) {
@@ -45,17 +45,17 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
                         data={backgroundImgs}
                         renderItem= {({item, i}) => {
                             return (
-                                <TouchableOpacity onPress={async (e) => {
+                                <TouchableOpacity style={[styles.imageWrapper, imgChosed === item && styles.imageChosed]} onPress={async () => {
                                     // Settea una imagen a la home
                                     try {
-                                        setChosed(true);
                                         setBackgroundHome(item);
+                                        setImgChosed(item);
                                         await AsyncStorage.setItem("background", item)
                                     } catch (e) {
                                         // saving error
                                     }
                                 }}>
-                                    <Image style={styles.image} key={i} source={{uri: `${item}`}} />
+                                    <Image style={[styles.image]} key={i} source={{uri: `${item}`}} />
                                 </TouchableOpacity>
                             ) 
                         }}
@@ -65,11 +65,11 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
                     <TouchableOpacity
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => {
-                            
+                            setImgChosed(false);
                             setBgModalVisible(!bgModalVisible)
                         
                         }}>
-                        <Text style={styles.buttonText}>{chosed ? "Aceptar" : "Cerrar"}</Text>
+                        <Text style={styles.buttonText}>{imgChosed ? "Aceptar" : "Cerrar"}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -127,16 +127,18 @@ const styles = StyleSheet.create({
         fontSize: 18,
 
     },
+    imageWrapper: {
+        height: 250,
+        marginVertical: 24,
+    },
     image: {
-        height: 250, 
-        marginVertical: 24
+        width: "100%",
+        height: "100%", 
+        // resizeMode: "containver",
     },
     imageChosed: {
-        borderRadius: 50,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        }
+        borderWidth: 6,
+        borderStyle: "solid",
+        borderColor: "#4C489E",
     }
 });

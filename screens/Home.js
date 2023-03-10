@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { useAnimatedStyle, useSharedValue, withTiming, Easing, withDelay } from 'react-native-reanimated';
-import Animated from 'react-native-reanimated';
-import { Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 import fetchPhrases from '../utils/fetchPhrases';
 import { BackgroundModal } from '../utils/backgroundModal';
 import { CategoryModal } from '../utils/categoryModal';
 import PracticeMode from '../utils/practiceMode';
-import Menu from '../src/components/Menu';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import LottieView from 'lottie-react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Footer from '../src/components/Footer';
+import Background from '../src/presentational/Background';
+import PhraseContainer from '../src/container/PhraseContainer';
+import AsyncStorageContainer from '../src/container/AsyncStorageContainer';
+import Header from '../src/components/Header';
 
 export default function Home() {
 
@@ -26,9 +24,9 @@ export default function Home() {
     // Posición del elemento para animarlo
     const position = useSharedValue(0);
     // Categoría de la pregunta
-    const [category, setCategory] = useState(null);
+    const [category, setCategory] = useState("Todas");
     // Background
-    const [backgroundHome, setBackgroundHome] = useState("https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/background1.jpg");
+    const [backgroundHome, setBackgroundHome] = useState("https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/background6.jpg");
     // Modals
     const [bgModalVisible, setBgModalVisible] = useState(false)
     const [catModalVisible, setCatModalVisible] = useState(false)
@@ -65,101 +63,30 @@ export default function Home() {
         }
     }, [category])
 
-    useEffect(async () => {
-        getBackgroundStorage();
-    }, [])
-
-    async function getBackgroundStorage() {
-        try {
-            const value = await AsyncStorage.getItem("background");
-            if (value !== null) {
-                setBackgroundHome(value);
-            }
-        } catch (e) {
-            // error reading value
-        }
-    }
-
-
-    const tap = Gesture.Pan().runOnJS(true)
-        .activeOffsetY([60, 60])
-        .onUpdate((e) => {
-            if (!practiceMode) {
-                position.value = e.translationY;
-            }
-        })
-        .onEnd((e) => {
-            if (!practiceMode) {
-                position.value = withTiming(position.value * 10, { duration: 400, easing: Easing.ease });
-                if (e.translationY < 60 && e.translationY > -60) {
-                    position.value = withTiming(0, { duration: 400, easing: Easing.ease });
-                }
-                setTimeout(() => {
-                    if (e.translationY > 60) {
-                        if (phrasesReaded > 0) {
-                            setPhrasesReaded(() => phrasesReaded - 1);
-                        }
-                        position.value = -Dimensions.get("window").height;
-                        position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
-                    } else if (e.translationY < -60) {
-                        if (phrasesReaded < dbLength.current - 1) {
-                            setPhrasesReaded(() => phrasesReaded + 1);
-                        }
-                        position.value = Dimensions.get("window").height;
-                        position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
-                    }
-                }, 250)
-            }
-        })
-
-    const animatedStyle = useAnimatedStyle(() => ({
-        transform: [{ translateY: position.value }],
-        width: "75%"
-    }));
-
     return (
         <>
-            <ImageBackground source={{ uri: backgroundHome }} style={styles.container}>
-                {swipeVisible &&
-                    <LottieView source={require("../assets/lottie/swipe.json")} style={styles.lottie} loop={true} autoPlay={true} />
-                }
+            <Background image={{ uri: backgroundHome }} swipeVisible={swipeVisible}>
+                <Header {...{setBgModalVisible, practiceMode}} />
+                <PhraseContainer {...{practiceMode, position, setPhrasesReaded, phrasesReaded, dbLength, phrasesArr}} />
+                <Footer {...{ practiceMode, setPracticeMode, bgModalVisible, setBgModalVisible, setCatModalVisible, category }} />
+            </Background>
 
-                <GestureDetector gesture={tap} enab>
-                    <View style={styles.animatedView}>
-                        <Animated.View style={[animatedStyle]} collapsable={false}>
-                            <Text style={styles.animatedText}>
-                                {
-                                    phrasesArr.length > 0 && phrasesArr[phrasesReaded] && phrasesArr[phrasesReaded].phrase
-                                }
-                            </Text>
-                        </Animated.View>
-                    </View>
-                </GestureDetector>
-                <Menu {...{ practiceMode, setPracticeMode, bgModalVisible, setBgModalVisible, setCatModalVisible }} />
-            </ImageBackground>
-
-
-
-            {/* Modal para elegir imágen de fondo, bgModalVisible y setBgModalVisible para establecer visibilidad del modal y
-                            set backgroundHome para establecer la imagen de fondo */}
             <BackgroundModal {...{ setBgModalVisible, bgModalVisible, setBackgroundHome }} />
-            {/* Modal para elegir categoría, catModalVisible y setCatModalVisible para establecer visibilidad del modal y setCategory
-                            para establecer la categoría actual. */}
             <CategoryModal {...{ setCatModalVisible, catModalVisible, setCategory }} />
-            {/* Child component para establecer el modo práctica. */}
             <PracticeMode {...{ setPracticeMode, practiceMode, position, phrasesReaded, setPhrasesReaded }} />
+            <AsyncStorageContainer {...{setBackgroundHome}} />
         </>
     )
 }
 
 
 
-const styles = StyleSheet.create({
-    container: {
-        width: wp("100%"),
-        height: hp("93%"),
-        position: "relative"
-    },
+/* const styles = StyleSheet.create({
+    // container: {
+    //     width: wp("100%"),
+    //     height: hp("93%"),
+    //     position: "relative"
+    // },
     animatedView: {
         height: "100%",
         justifyContent: "center",
@@ -181,4 +108,4 @@ const styles = StyleSheet.create({
         top: "15%",
         left: "40%",
     }
-})
+}) */

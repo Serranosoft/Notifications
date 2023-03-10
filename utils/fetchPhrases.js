@@ -5,7 +5,7 @@ export default class fetchPhrases {
     static async getPhrasesLength(category) {
         const { data, count } =
             await supabase
-                .from(category ? category : "All")
+                .from(category)
                 .select('*', { count: 'exact' })
     
         return count;
@@ -13,7 +13,7 @@ export default class fetchPhrases {
     
     static async getPhrases(arr, setArr, setArrLength, arrLength, category) {
         await supabase
-            .from(category ? `random_${category.toLowerCase()}` : "random_all")
+            .from(category)
             .select("phrase")
             .range(arrLength, arrLength + 10)
             .then((res) => {
