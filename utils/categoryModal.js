@@ -17,13 +17,18 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
                 data.forEach(category => setCategories(categories => categories.concat(category.name)));
             }
             fetchCategories();
-            setCategories(categories => categories.concat("Favoritos"));
+            setOtherCategories();
         }
     }, [])
+    
+    function setOtherCategories() {
+        setCategories(categories => categories.concat("Favoritos"));
+        setCategories(categories => categories.concat("General"))
+    }
 
     return (
         <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={catModalVisible}
             onRequestClose={() => {
@@ -31,7 +36,7 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalTitle}>Elige una categoría</Text>
+                    <Text style={styles.modalTitle}>¿Cómo estas?</Text>
                     <FlatList
                         data={categories}
                         numColumns={2}
@@ -126,12 +131,19 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingVertical: 10,
         paddingHorizontal: 50,
-        elevation: 5,
-        backgroundColor: "black",
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 3,
+            height: 3,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        elevation: 3,
+        backgroundColor: "#fafafa",
         alignSelf: "center"
     },
     buttonText: {
-        color: 'white',
+        color: 'black',
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 18,
