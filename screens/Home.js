@@ -25,7 +25,7 @@ export default function Home() {
     // Posición del elemento para animarlo
     const position = useSharedValue(0);
     // Categoría de la pregunta
-    const [category, setCategory] = useState("Todas");
+    const [category, setCategory] = useState("General");
     // Background
     const [backgroundHome, setBackgroundHome] = useState("https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/background6.jpg");
     // Favorites
