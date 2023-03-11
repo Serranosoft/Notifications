@@ -41,14 +41,19 @@ export default function Home() {
     // Cuando no existan frases, se obtiene la cantidad de frases de la categoría 'x' y obtiene el array de frases de esa categoría
     useEffect(() => {
         if (phrasesArr.length < 1) {
-            fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
-            fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
+            if (category === "Favoritos") {
+                setPhrasesArr(favorites);
+                dbLength.current = favorites.length
+            } else {
+                fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
+                fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
+            }
         }
     }, [phrasesArr])
 
     // Cada 7 frases leidas, carga otras 10 en el array
     useEffect(() => {
-        if (phrasesArr.length > 0) {
+        if (phrasesArr.length > 0 && category !== "Favoritos") {
             swipeVisible === true && setSwipeVisible(false);
             if (phrasesReaded === phrasesLength - 3) {
                 fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
@@ -59,7 +64,11 @@ export default function Home() {
     // Al cambiar de categoría, obtiene la longitud del array de las nuevas preguntas y resetea todas las variables
     useEffect(() => {
         if (category !== null) {
-            fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
+            if (category == "Favoritos") {
+                setPhrasesLength(favorites.length);
+            } else {
+                fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
+            }
             setPhrasesArr([]);
             setPhrasesLength(0);
             setPhrasesReaded(0);
@@ -78,8 +87,6 @@ export default function Home() {
 
     useEffect(() => {
         saveFavorite();
-
-        console.log(favorites);
     }, [favorites])
 
     return (

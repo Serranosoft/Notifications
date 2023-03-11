@@ -15,25 +15,36 @@ export default function PhraseContainer({practiceMode, position, setPhrasesReade
         })
         .onEnd((e) => {
             if (!practiceMode) {
-                position.value = withTiming(position.value * 10, { duration: 400, easing: Easing.ease });
-                if (e.translationY < 60 && e.translationY > -60) {
-                    position.value = withTiming(0, { duration: 400, easing: Easing.ease });
-                }
-                setTimeout(() => {
-                    if (e.translationY > 60) {
-                        if (phrasesReaded > 0) {
-                            setPhrasesReaded(() => phrasesReaded - 1);
+                if (e.translationY < -60) {
+                    if (phrasesReaded < dbLength.current - 1) {
+                        position.value = withTiming(position.value * 10, { duration: 400, easing: Easing.ease });
+                        if (e.translationY < 60 && e.translationY > -60) {
+                            position.value = withTiming(0, { duration: 400, easing: Easing.ease });
                         }
-                        position.value = -Dimensions.get("window").height;
-                        position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
-                    } else if (e.translationY < -60) {
-                        if (phrasesReaded < dbLength.current - 1) {
+                        setTimeout(() => {
                             setPhrasesReaded(() => phrasesReaded + 1);
+                            position.value = Dimensions.get("window").height;
+                            position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
+                        }, 250)
+                    } else {
+                        position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }));
+                    }
+                } else if (e.translationY > 60) {
+                    if (phrasesReaded > 0) {
+                        position.value = withTiming(position.value * 10, { duration: 400, easing: Easing.ease });
+                        if (e.translationY < 60 && e.translationY > -60) {
+                            position.value = withTiming(0, { duration: 400, easing: Easing.ease });
                         }
-                        position.value = Dimensions.get("window").height;
+                        setTimeout(() => {
+                            setPhrasesReaded(() => phrasesReaded - 1);
+                            position.value = -Dimensions.get("window").height;
+                            position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
+                        }, 250)
+
+                    } else {
                         position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
                     }
-                }, 250)
+                }
             }
         })
 
@@ -44,7 +55,7 @@ export default function PhraseContainer({practiceMode, position, setPhrasesReade
 
     function phrase() {
         if (phrasesArr.length > 0 && phrasesArr[phrasesReaded]) {
-            return <Phrase phrase={phrasesArr[phrasesReaded].phrase} checkIfFavoriteExists={checkIfFavoriteExists} />
+            return <Phrase phrase={phrasesArr[phrasesReaded]} checkIfFavoriteExists={checkIfFavoriteExists} />
         }
     }
     

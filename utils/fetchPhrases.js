@@ -18,9 +18,9 @@ export default class fetchPhrases {
             .range(arrLength, arrLength + 10)
             .then((res) => {
                 if (arr.length < 1) {
-                    setArr(res.data);
+                    setArr(res.data.map(phrase => phrase.phrase));
                 } else {
-                    setArr(arr.concat(res.data))
+                    setArr(arr.concat(res.data.map(phrase => phrase.phrase)))
                 }
     
             })

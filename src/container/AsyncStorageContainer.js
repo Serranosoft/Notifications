@@ -22,7 +22,6 @@ export default function AsyncStorageContainer({setBackgroundHome, setFavorites})
     async function getFavorites() {
         try {
             const value = await AsyncStorage.getItem("favorites");
-            console.log(value);
             if (value !== null) {
                 setFavorites(JSON.parse(value));
             }

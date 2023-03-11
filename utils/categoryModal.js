@@ -16,7 +16,8 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
                 const {data, error} = await supabase.from("Categories").select("name");
                 data.forEach(category => setCategories(categories => categories.concat(category.name)));
             }
-            fetchCategories()
+            fetchCategories();
+            setCategories(categories => categories.concat("Favoritos"));
         }
     }, [])
 
