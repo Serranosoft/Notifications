@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     animatedText: {
+        // fontFamily: "Arthead-Regular",
         textAlign: "center",
         fontSize: 20,
         color: "white",

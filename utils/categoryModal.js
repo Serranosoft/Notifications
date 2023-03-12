@@ -22,8 +22,8 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
     }, [])
     
     function setOtherCategories() {
-        setCategories(categories => categories.concat("Favoritos"));
         setCategories(categories => categories.concat("General"))
+        setCategories(categories => categories.concat("Favoritos"));
     }
 
     return (
@@ -98,7 +98,9 @@ const styles = StyleSheet.create({
     modalTitle: {
         marginBottom: 15,
         textAlign: 'center',
-        fontSize: 18,
+        fontSize: 22,
+        fontFamily: "Arthead-Regular",
+
     },
     category: {
         shadowColor: '#000',

@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { Text, View, Modal, StyleSheet, Pressable, Image, Dimensions, TouchableOpacity } from "react-native";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { useEffect, useState } from "react";
+import { Text, View, Modal, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { supabase } from "../src/supabaseClient"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ImageBackgroundPickerContainer from "../src/container/ImageBackgroundPickerContainer";
 
 export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgroundHome }) => {
 
@@ -32,7 +33,7 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
 
     return (
         <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={bgModalVisible}
             onRequestClose={() => {
@@ -40,7 +41,9 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Elige un fondo</Text>
+                    <Text style={styles.modalText}>Elige como decorar el fondo</Text>
+                    <ImageBackgroundPickerContainer setBackgroundHome={setBackgroundHome} setBgModalVisible={setBgModalVisible} />
+                    <Text style={[styles.modalText, styles.separator]}>------- o -------</Text>
                     <FlatList
                         data={backgroundImgs}
                         renderItem= {({item, i}) => {
@@ -65,11 +68,11 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
                     <TouchableOpacity
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => {
-                            setImgChosed(false);
+                            setImgChosed(0);
                             setBgModalVisible(!bgModalVisible)
                         
                         }}>
-                        <Text style={styles.buttonText}>{imgChosed ? "Aceptar" : "Cerrar"}</Text>
+                        <Text style={styles.buttonText}>{imgChosed !== 0 ? "Aceptar" : "Cerrar"}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -110,12 +113,19 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingVertical: 10,
         paddingHorizontal: 50,
-        elevation: 5,
-        backgroundColor: "black",
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 3,
+            height: 3,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        elevation: 3,
+        backgroundColor: "#fafafa",
         alignSelf: "center"
     },
     buttonText: {
-        color: 'white',
+        color: 'black',
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 18,
@@ -123,9 +133,10 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
-        fontWeight: 'bold',
         fontSize: 18,
-
+    },
+    separator: {
+        letterSpacing: -1,
     },
     imageWrapper: {
         height: 250,
@@ -134,7 +145,6 @@ const styles = StyleSheet.create({
     image: {
         width: "100%",
         height: "100%", 
-        // resizeMode: "containver",
     },
     imageChosed: {
         borderWidth: 6,
