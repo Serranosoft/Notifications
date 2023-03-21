@@ -4,7 +4,7 @@ import { useAnimatedStyle, withDelay, Easing, withTiming } from "react-native-re
 import Animated from 'react-native-reanimated';
 import Phrase from "../presentational/Phrase";
 
-export default function PhraseContainer({practiceMode, position, setPhrasesReaded, phrasesReaded, dbLength, phrasesArr, checkIfFavoriteExists}) {
+export default function PhraseContainer({practiceMode, position, setPhrasesReaded, phrasesReaded, dbLength, phrasesArr, checkIfFavoriteExists, favorites}) {
 
     const tap = Gesture.Pan().runOnJS(true)
         .activeOffsetY([60, 60])
@@ -55,7 +55,7 @@ export default function PhraseContainer({practiceMode, position, setPhrasesReade
 
     function phrase() {
         if (phrasesArr.length > 0 && phrasesArr[phrasesReaded]) {
-            return <Phrase phrase={phrasesArr[phrasesReaded]} checkIfFavoriteExists={checkIfFavoriteExists} />
+            return <Phrase phrase={phrasesArr[phrasesReaded]} checkIfFavoriteExists={checkIfFavoriteExists} favorites={favorites} />
         }
     }
     

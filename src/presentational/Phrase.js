@@ -1,23 +1,16 @@
+import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native"
 import { TouchableOpacity } from "react-native"
+import FavoriteContainer from "../container/FavoriteContainer";
 
-export default function Phrase({phrase, checkIfFavoriteExists}) {
+export default function Phrase({phrase, checkIfFavoriteExists, favorites}) {
 
-
-    function addFavorite() {
-        checkIfFavoriteExists(phrase);
-    }
-    
     return (
         <View style={styles.container}>
             <Text style={styles.animatedText}>
                 {phrase}
             </Text>
-            <TouchableOpacity onPressIn={() => {
-                addFavorite();
-            }}>
-                <Text style={{color: "white"}}>Añadir a fav</Text>
-            </TouchableOpacity>
+            <FavoriteContainer checkIfFavoriteExists={checkIfFavoriteExists} phrase={phrase} favorites={favorites} />
         </View>
     )
 }

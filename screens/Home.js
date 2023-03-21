@@ -75,25 +75,32 @@ export default function Home() {
         }
     }, [category])
 
+    // Agrega o elimina favoritos del estado
     async function checkIfFavoriteExists(phrase) {
         if (!favorites.includes(phrase)) {
             setFavorites(favorites => favorites.concat(phrase));
+        } else {
+            let favoritesAux = [...favorites];
+            favoritesAux.splice(favoritesAux.indexOf(phrase), 1)
+            setFavorites(favoritesAux);
         }
     }
-
-    async function saveFavorite() {
-        await AsyncStorage.setItem("favorites", JSON.stringify(favorites));
-    }
-
+    
+    // Cada vez que el estado se actualiza, llama a saveFavorite
     useEffect(() => {
         saveFavorite();
     }, [favorites])
+
+    // Reemplaza el contenido de favoritos del storage con el nuevo array
+    async function saveFavorite() {
+        await AsyncStorage.setItem("favorites", JSON.stringify(favorites));
+    }
 
     return (
         <>
             <Background image={{ uri: backgroundHome }} swipeVisible={swipeVisible}>
                 <Header {...{ setBgModalVisible, practiceMode }} />
-                <PhraseContainer {...{ practiceMode, position, setPhrasesReaded, phrasesReaded, dbLength, phrasesArr, checkIfFavoriteExists }} />
+                <PhraseContainer {...{ practiceMode, position, setPhrasesReaded, phrasesReaded, dbLength, phrasesArr, checkIfFavoriteExists, favorites }} />
                 <Footer {...{ practiceMode, setPracticeMode, bgModalVisible, setBgModalVisible, setCatModalVisible, category }} />
             </Background>
 
