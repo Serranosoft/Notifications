@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { createContext, useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import fetchPhrases from '../utils/fetchPhrases';
@@ -11,8 +11,7 @@ import PhraseContainer from '../src/container/PhraseContainer';
 import AsyncStorageContainer from '../src/container/AsyncStorageContainer';
 import Header from '../src/components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-export const DataContext = createContext();
+import { DataContext } from '../utils/DataContext';
 
 export default function Home() {
 
@@ -100,7 +99,7 @@ export default function Home() {
 
     return (
         <>
-            <DataContext value={
+            <DataContext.Provider value={
                 {
                     practiceMode: practiceMode,
                     position: position,
@@ -122,7 +121,7 @@ export default function Home() {
                 <CategoryModal setCatModalVisible={setCatModalVisible} catModalVisible={catModalVisible} setCategory={setCategory} />
                 <PracticeMode setPracticeMode={setPracticeMode} setPhrasesReaded={setPhrasesReaded} />
                 <AsyncStorageContainer setBackgroundHome={setBackgroundHome} setFavorites={setFavorites} />
-            </DataContext>
+            </DataContext.Provider>
         </>
     )
 }

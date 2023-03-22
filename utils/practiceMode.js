@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { BackHandler, Dimensions, StyleSheet, Text, View } from "react-native";
 import { Easing, withDelay, withTiming } from "react-native-reanimated";
-import { DataContext } from "../screens/Home";
+import { DataContext } from "./DataContext";
 
 export default function PracticeMode({ setPracticeMode, setPhrasesReaded }) {
 

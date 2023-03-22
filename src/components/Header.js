@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { DataContext } from "../../screens/Home";
+import { DataContext } from "../../utils/DataContext";
 
 export default function Header({setBgModalVisible }) {
 
