@@ -4,7 +4,7 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Easing, withDelay, withTiming } from "react-native-reanimated";
 import { DataContext } from "./DataContext";
 
-export default function PracticeMode({ setPracticeMode, setPhrasesReaded }) {
+export default function PracticeMode({ setPracticeMode, setPhrasesReaded, setCategory }) {
 
     const { practiceMode, position, phrasesReaded } = useContext(DataContext);
 
@@ -35,6 +35,7 @@ export default function PracticeMode({ setPracticeMode, setPhrasesReaded }) {
     }, [practiceMode])
 
     function loadPhrasesInterval() {
+        setCategory("General");
         setDelayScreen(false);
         practiceModeInterval.current = setInterval(() => {
             position.value = withTiming(-Dimensions.get("window").height, { duration: 400, easing: Easing.ease });

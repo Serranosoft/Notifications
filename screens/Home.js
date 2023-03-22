@@ -119,7 +119,7 @@ export default function Home() {
 
                 <BackgroundModal setBgModalVisible={setBgModalVisible} bgModalVisible={bgModalVisible} setBackgroundHome={setBackgroundHome} />
                 <CategoryModal setCatModalVisible={setCatModalVisible} catModalVisible={catModalVisible} setCategory={setCategory} />
-                <PracticeMode setPracticeMode={setPracticeMode} setPhrasesReaded={setPhrasesReaded} />
+                <PracticeMode setPracticeMode={setPracticeMode} setPhrasesReaded={setPhrasesReaded} setCategory={setCategory} />
                 <AsyncStorageContainer setBackgroundHome={setBackgroundHome} setFavorites={setFavorites} />
             </DataContext.Provider>
         </>
