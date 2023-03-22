@@ -1,2 +1,1 @@
 Añadir modal de error informativo en los try 'catch'.
-Forzar categoría general en modo practica

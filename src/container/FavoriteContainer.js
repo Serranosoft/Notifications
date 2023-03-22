@@ -5,7 +5,7 @@ import Favorite from "../presentational/Favorite";
 export default function FavoriteContainer({checkIfFavoriteExists}) {
 
     const [isFavorite, setIsFavorite] = useState(false);
-    const {favorites, phrase} = useContext(DataContext)
+    const {favorites, phrase, practiceMode} = useContext(DataContext)
 
     useEffect(() => {
         if (favorites) {
@@ -19,6 +19,6 @@ export default function FavoriteContainer({checkIfFavoriteExists}) {
     }
 
     return (
-        <Favorite handleFavorite={handleFavorite} isFavorite={isFavorite} />
+        practiceMode === false && <Favorite handleFavorite={handleFavorite} isFavorite={isFavorite} />
     )
 }
