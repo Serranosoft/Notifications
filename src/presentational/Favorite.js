@@ -56,6 +56,7 @@ export default function Favorite({ handleFavorite, isFavorite }) {
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 16,
         width: 30,
         height: 30,
     },

@@ -4,16 +4,16 @@ import { TouchableOpacity } from "react-native"
 import { DataContext } from "../../utils/DataContext";
 import FavoriteContainer from "../container/FavoriteContainer";
 
-export default function Phrase({checkIfFavoriteExists}) {
+export default function Phrase({checkIfFavoriteExists, phrase}) {
 
-    const {phrase} = useContext(DataContext);
+    const {category, practiceMode} = useContext(DataContext);
 
     return (
         <View style={styles.container}>
             <Text style={styles.animatedText}>
-                {phrase}
+                { category === "Favoritos" && !phrase ? "No tienes ninguna frase favorita" : phrase }
             </Text>
-            <FavoriteContainer checkIfFavoriteExists={checkIfFavoriteExists} />
+            { phrase && !practiceMode ? <FavoriteContainer checkIfFavoriteExists={checkIfFavoriteExists} /> : <></>}
         </View>
     )
 }
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
         // fontFamily: "Arthead-Regular",
         textAlign: "center",
         fontSize: 20,
-        color: "white",
-        marginBottom: 16
+        color: "white"
     },
 })

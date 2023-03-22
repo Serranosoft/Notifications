@@ -57,18 +57,12 @@ export default function PhraseContainer({setPhrasesReaded, checkIfFavoriteExists
         width: "75%"
     }));
 
-    function phrase() {
-        if (phrasesArr.length > 0 && phrasesArr[phrasesReaded]) {
-            return <Phrase checkIfFavoriteExists={checkIfFavoriteExists} />
-        }
-    }
-
     return (
         <>
             <GestureDetector gesture={tap}>
                 <View style={[styles.animatedView, practiceMode && styles.fullHeight]}>
                     <Animated.View style={[animatedStyle]} collapsable={false}>
-                        { phrase() }
+                        <Phrase phrase={phrasesArr[phrasesReaded]} checkIfFavoriteExists={checkIfFavoriteExists} />
                     </Animated.View>
                 </View>
             </GestureDetector>

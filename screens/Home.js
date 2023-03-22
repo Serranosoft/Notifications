@@ -43,8 +43,8 @@ export default function Home() {
     useEffect(() => {
         if (phrasesArr.length < 1) {
             if (category === "Favoritos") {
-                setPhrasesArr(favorites);
                 dbLength.current = favorites.length
+                favorites.length !== 0 && setPhrasesArr(favorites);
             } else {
                 fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
                 fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
@@ -65,14 +65,13 @@ export default function Home() {
     // Al cambiar de categoría, obtiene la longitud del array de las nuevas preguntas y resetea todas las variables
     useEffect(() => {
         if (category !== null) {
+            setPhrasesArr([]);
+            setPhrasesReaded(0);
             if (category == "Favoritos") {
                 setPhrasesLength(favorites.length);
             } else {
                 fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
             }
-            setPhrasesArr([]);
-            setPhrasesLength(0);
-            setPhrasesReaded(0);
         }
     }, [category])
 
