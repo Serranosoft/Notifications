@@ -1,7 +1,13 @@
+import { useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { DataContext } from "../../screens/Home";
 
-export default function Footer({practiceMode, setPracticeMode, setCatModalVisible, category }) {
+export default function Footer({setPracticeMode, setCatModalVisible}) {
+
+
+    const {practiceMode, category} = useContext(DataContext)
+
     return (
         <>
             {!practiceMode ?

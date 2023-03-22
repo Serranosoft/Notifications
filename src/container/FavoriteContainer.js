@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DataContext } from "../../screens/Home";
 import Favorite from "../presentational/Favorite";
 
-export default function FavoriteContainer({checkIfFavoriteExists, phrase, favorites}) {
+export default function FavoriteContainer({checkIfFavoriteExists}) {
 
     const [isFavorite, setIsFavorite] = useState(false);
+    const {favorites, phrase} = useContext(DataContext)
 
     useEffect(() => {
         if (favorites) {

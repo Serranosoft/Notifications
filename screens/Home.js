@@ -12,6 +12,8 @@ import AsyncStorageContainer from '../src/container/AsyncStorageContainer';
 import Header from '../src/components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export const DataContext = createContext();
+
 export default function Home() {
 
     // Array de frases.
@@ -85,7 +87,7 @@ export default function Home() {
             setFavorites(favoritesAux);
         }
     }
-    
+
     // Cada vez que el estado se actualiza, llama a saveFavorite
     useEffect(() => {
         saveFavorite();
@@ -98,16 +100,29 @@ export default function Home() {
 
     return (
         <>
-            <Background image={{ uri: backgroundHome }} swipeVisible={swipeVisible}>
-                <Header {...{ setBgModalVisible, practiceMode }} />
-                <PhraseContainer {...{ practiceMode, position, setPhrasesReaded, phrasesReaded, dbLength, phrasesArr, checkIfFavoriteExists, favorites }} />
-                <Footer {...{ practiceMode, setPracticeMode, bgModalVisible, setBgModalVisible, setCatModalVisible, category }} />
-            </Background>
+            <DataContext value={
+                {
+                    practiceMode: practiceMode,
+                    position: position,
+                    phrasesReaded: phrasesReaded,
+                    dbLength: dbLength.current,
+                    phrasesArr: phrasesArr,
+                    favorites: favorites,
+                    category: category,
+                    phrase: phrasesArr[phrasesReaded]
+                }
+            }>
+                <Background image={{ uri: backgroundHome }} swipeVisible={swipeVisible}>
+                    <Header setBgModalVisible={setBgModalVisible} />
+                    <PhraseContainer setPhrasesReaded={setPhrasesReaded} checkIfFavoriteExists={checkIfFavoriteExists} />
+                    <Footer setPracticeMode={setPracticeMode} setCatModalVisible={setCatModalVisible} />
+                </Background>
 
-            <BackgroundModal {...{ setBgModalVisible, bgModalVisible, setBackgroundHome }} />
-            <CategoryModal {...{ setCatModalVisible, catModalVisible, setCategory }} />
-            <PracticeMode {...{ setPracticeMode, practiceMode, position, phrasesReaded, setPhrasesReaded }} />
-            <AsyncStorageContainer {...{ setBackgroundHome, setFavorites }} />
+                <BackgroundModal setBgModalVisible={setBgModalVisible} bgModalVisible={bgModalVisible} setBackgroundHome={setBackgroundHome} />
+                <CategoryModal setCatModalVisible={setCatModalVisible} catModalVisible={catModalVisible} setCategory={setCategory} />
+                <PracticeMode setPracticeMode={setPracticeMode} setPhrasesReaded={setPhrasesReaded} />
+                <AsyncStorageContainer setBackgroundHome={setBackgroundHome} setFavorites={setFavorites} />
+            </DataContext>
         </>
     )
 }

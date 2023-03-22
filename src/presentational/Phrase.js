@@ -1,16 +1,19 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native"
 import { TouchableOpacity } from "react-native"
+import { DataContext } from "../../screens/Home";
 import FavoriteContainer from "../container/FavoriteContainer";
 
-export default function Phrase({phrase, checkIfFavoriteExists, favorites}) {
+export default function Phrase({checkIfFavoriteExists}) {
+
+    const {phrase} = useContext(DataContext);
 
     return (
         <View style={styles.container}>
             <Text style={styles.animatedText}>
                 {phrase}
             </Text>
-            <FavoriteContainer checkIfFavoriteExists={checkIfFavoriteExists} phrase={phrase} favorites={favorites} />
+            <FavoriteContainer checkIfFavoriteExists={checkIfFavoriteExists} />
         </View>
     )
 }
