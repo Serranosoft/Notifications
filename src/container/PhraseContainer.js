@@ -62,7 +62,7 @@ export default function PhraseContainer({setPhrasesReaded, checkIfFavoriteExists
             return <Phrase checkIfFavoriteExists={checkIfFavoriteExists} />
         }
     }
-    
+
     return (
         <>
             <GestureDetector gesture={tap}>
