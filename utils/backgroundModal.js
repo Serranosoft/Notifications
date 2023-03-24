@@ -41,7 +41,7 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Elige como decorar el fondo</Text>
+                    <Text style={styles.modalTitle}>Elige como decorar el fondo</Text>
                     <ImageBackgroundPickerContainer setBackgroundHome={setBackgroundHome} setBgModalVisible={setBgModalVisible} />
                     <Text style={[styles.modalText, styles.separator]}>------- o -------</Text>
                     <FlatList
@@ -129,11 +129,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 18,
+        fontFamily: "Hubhead"
     },
     modalText: {
-        marginBottom: 15,
+        marginBottom: 10,
         textAlign: 'center',
-        fontSize: 18,
+        fontSize: 16,
+        fontFamily: "Hubhead",
+    },
+    modalTitle: {
+        marginBottom: 20,
+        textAlign: 'center',
+        fontSize: 20,
+        fontFamily: "Hubhead",
     },
     separator: {
         letterSpacing: -1,

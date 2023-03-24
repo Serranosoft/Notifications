@@ -36,7 +36,7 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalTitle}>¿Cómo estas?</Text>
+                    <Text style={styles.modalTitle}>Categorías</Text>
                     <FlatList
                         data={categories}
                         numColumns={2}
@@ -51,7 +51,7 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
                                     setCatModalVisible(!catModalVisible);
                                 }}>
                                     <View>
-                                        <Image style={styles.image} resizeMode="cover" source={{ uri: `https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/categories/${item.replace(/\s+/g, '_')}.png?cache1` }} />
+                                        <Image style={styles.image} /* resizeMode="cover" */ source={{ uri: `https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/categories/${item.replace(/\s+/g, '_')}.png?cache2` }} />
                                         <Text style={styles.categoryText}>{item}</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -70,8 +70,11 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
         </Modal>
     )
 
-
 }
+
+
+const win = Dimensions.get('window');
+const imageRatio = win.width / 256;
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -96,11 +99,10 @@ const styles = StyleSheet.create({
         height: "75%",
     },
     modalTitle: {
-        marginBottom: 15,
+        marginBottom: 20,
         textAlign: 'center',
-        fontSize: 22,
-        fontFamily: "Arthead-Regular",
-
+        fontSize: 20,
+        fontFamily: "Hubhead",
     },
     category: {
         shadowColor: '#000',
@@ -119,14 +121,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
     },
     image: {
-        width: 128,
-        height: 128,
-        marginBottom: 8,
-        alignSelf: "center"
+        width: win.width / 2,
+        height: ((256 * imageRatio) / 2),
+        alignSelf: "center",
     },
     categoryText: {
-        fontSize: 14,
+        fontSize: 16,
         color: "black",
+        fontFamily: "Hubhead",
     },
     button: {
         marginTop: 20,

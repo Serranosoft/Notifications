@@ -12,7 +12,7 @@ export default function Header({setBgModalVisible }) {
             {!practiceMode ?
                 <View style={styles.container}>
                     <TouchableOpacity style={styles.touchable} onPress={() => setBgModalVisible(true)}>
-                        <Image source={require("../../assets/background.png")} style={styles.icon} />
+                        <Image source={require("../../assets/pincel.png")} style={styles.icon} />
                     </TouchableOpacity>
                 </View>
                 :

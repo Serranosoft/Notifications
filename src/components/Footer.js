@@ -14,7 +14,7 @@ export default function Footer({setPracticeMode, setCatModalVisible}) {
                 <View style={styles.container}>
                     <TouchableOpacity style={styles.touchable} onPress={() => setCatModalVisible(true)}>
                         <View style={styles.touchableWrapper}>
-                            <Image source={require("../../assets/category.png")} style={styles.icon} />
+                            <Image source={require("../../assets/menu.png")} style={styles.icon} />
                             <Text style={styles.text}>{category}</Text>
                         </View>
                     </TouchableOpacity>
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     text: {
+        fontFamily: "Hubhead",
         marginLeft: 10,
         color: "white"
     },

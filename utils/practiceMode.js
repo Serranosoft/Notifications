@@ -8,7 +8,7 @@ export default function PracticeMode({ setPracticeMode, setPhrasesReaded, setCat
 
     const { practiceMode, position, phrasesReaded } = useContext(DataContext);
 
-    const PHRASES_QTY = 8;
+    const PHRASES_QTY = 10;
     const PHRASES_READED = useRef(0);
 
     // Estado del modo práctica en activo o no
@@ -30,7 +30,7 @@ export default function PracticeMode({ setPracticeMode, setPhrasesReaded, setCat
         practiceModeInterval.current = null;
         if (practiceMode) {
             setDelayScreen(true);
-            practiceModeTimeout.current = setTimeout(loadPhrasesInterval, 6500)
+            practiceModeTimeout.current = setTimeout(loadPhrasesInterval, 5250)
         }
     }, [practiceMode])
 
@@ -45,7 +45,7 @@ export default function PracticeMode({ setPracticeMode, setPhrasesReaded, setCat
                 position.value = Dimensions.get("window").height;
                 position.value = withDelay(25, withTiming(0, { duration: 300, easing: Easing.ease }))
             }, 250)
-        }, 2000)
+        }, 5000)
     }
 
     const tap = Gesture.Tap().runOnJS(true)
@@ -112,5 +112,6 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: "white",
         textAlign: "center",
+        fontFamily: "Hubhead"
     }
 })

@@ -27,9 +27,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     animatedText: {
-        // fontFamily: "Arthead-Regular",
+        fontFamily: "Hubhead",
         textAlign: "center",
         fontSize: 20,
-        color: "white"
+        color: "white",
+        lineHeight: 21.5
     },
 })

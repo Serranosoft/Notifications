@@ -11,8 +11,9 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
 
     const [fontsLoaded] = useFonts({
-        'Arthead-Regular': require('./assets/fonts/Arthead/Arthead-Regular.otf'),
-        'Arthead-Bold': require('./assets/fonts/Arthead/Arthead-Bold.otf'),
+        // 'Arthead-Regular': require('./assets/fonts/Arthead/Arthead-Regular.otf'),
+        // 'Arthead-Bold': require('./assets/fonts/Arthead/Arthead-Bold.otf'),
+        "Hubhead": require("./assets/fonts/Hubhead/Hubhead.otf"),
     });
 
     const onLayoutRootView = useCallback(async () => {
