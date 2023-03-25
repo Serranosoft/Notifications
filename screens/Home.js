@@ -41,7 +41,6 @@ export default function Home() {
 
     // Cuando no existan frases, se obtiene la cantidad de frases de la categoría 'x' y obtiene el array de frases de esa categoría
     useEffect(() => {
-        console.log(phrasesArr);
         if (phrasesArr.length < 1) {
             if (category === "Favoritos") {
                 dbLength.current = favorites.length
