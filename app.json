@@ -4,12 +4,12 @@
     "slug": "Notifications",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash-image.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#EFE7DD"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,8 +22,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/splash-image.png",
+        "backgroundColor": "#EFE7DD"
       }
     },
     "web": {
@@ -33,7 +33,7 @@
         [
             "expo-image-picker",
             {
-              "photosPermission": "The app accesses your photos to let you share them with your friends."
+              "photosPermission": "La aplicación accede a la galería para poder utilizar la foto que quieras como fondo decorativo"
             }
         ]
     ]
