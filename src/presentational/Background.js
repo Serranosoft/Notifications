@@ -1,5 +1,4 @@
-import { ImageBackground, StyleSheet } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { ImageBackground, StatusBar, StyleSheet } from "react-native";
 import LottieView from 'lottie-react-native';
 
 export default function Background({ children, image, swipeVisible }) {
@@ -17,9 +16,9 @@ export default function Background({ children, image, swipeVisible }) {
 
 const styles = StyleSheet.create({
     container: {
-        width: wp("100%"),
-        height: hp("100%"),
+        flex: 1,        
         position: "relative",
+        paddingTop: StatusBar.currentHeight,
     },
     lottie: {
         width: 150,

@@ -28,7 +28,7 @@ export default function App() {
 
     return (
         <View style={{flex: 1}} onLayout={onLayoutRootView}>
-            <GestureHandlerRootView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
+            <GestureHandlerRootView style={{flex: 1}}>
                 <Home />
             </GestureHandlerRootView>
         </View>

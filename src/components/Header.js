@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { DataContext } from "../../utils/DataContext";
 
 export default function Header({setBgModalVisible }) {
@@ -24,10 +23,9 @@ export default function Header({setBgModalVisible }) {
 
 const styles = StyleSheet.create({
     container: {
-        width: wp("100%"),
-        height: hp("6%"),
-        marginTop: hp("4%"),
-        paddingHorizontal: "3%",
+        flex: 1,
+        marginTop: "3%",
+        marginHorizontal: "3%",
         alignItems: "flex-end",
         justifyContent: "flex-end",
     },

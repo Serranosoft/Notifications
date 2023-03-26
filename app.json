@@ -28,6 +28,7 @@
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ],
+      "versionCode": 2,
       "package": "com.paulaymanu113.yosoy"
     },
     "web": {

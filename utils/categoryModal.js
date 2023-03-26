@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Text, View, Modal, StyleSheet, Pressable, Image, Dimensions, TouchableOpacity, ImageBackground } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { supabase } from "../src/supabaseClient"
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory }) => {
@@ -77,8 +76,7 @@ const imageRatio = win.width / 256;
 
 const styles = StyleSheet.create({
     centeredView: {
-        width: wp("100%"),
-        height: hp("100%"),
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Text, View, Modal, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { supabase } from "../src/supabaseClient"
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImageBackgroundPickerContainer from "../src/container/ImageBackgroundPickerContainer";
 
@@ -84,8 +83,7 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
 
 const styles = StyleSheet.create({
     centeredView: {
-        width: wp("100%"),
-        height: hp("100%"),
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -104,9 +102,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        width: "90%",
-        // flex: 1
-        height: "80%"
+        width: "95%",
+        height: "90%"
     },
     button: {
         marginTop: 20,

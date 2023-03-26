@@ -5,7 +5,6 @@ import Animated from 'react-native-reanimated';
 import Phrase from "../presentational/Phrase";
 import { useContext } from "react";
 import { DataContext } from "../../utils/DataContext";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function PhraseContainer({setPhrasesReaded, checkIfFavoriteExists}) {
 
@@ -74,7 +73,7 @@ export default function PhraseContainer({setPhrasesReaded, checkIfFavoriteExists
 
 const styles = StyleSheet.create({
     animatedView: {
-        height: hp("80%"),
+        flex: 10,
         justifyContent: "center",
         alignItems: "center",
     },
