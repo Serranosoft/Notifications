@@ -24,7 +24,7 @@ export const BackgroundModal = ({ setBgModalVisible, bgModalVisible, setBackgrou
             }
     
             async function fetchBackgroundsUrls(imgName) {
-                const {data, error} = await supabase.storage.from("backgrounds").getPublicUrl(`${imgName}`);
+                const {data, error} = await supabase.storage.from("backgrounds").getPublicUrl(`backgrounds/${imgName}`);
                 setBackgroundImgs(backgroundImgs => backgroundImgs.concat(data.publicUrl));
             }
             fetchBackgrounds();

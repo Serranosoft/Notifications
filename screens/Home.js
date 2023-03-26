@@ -26,7 +26,7 @@ export default function Home() {
     // Categoría de la pregunta
     const [category, setCategory] = useState("General");
     // Background
-    const [backgroundHome, setBackgroundHome] = useState("https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/background6.jpg");
+    const [backgroundHome, setBackgroundHome] = useState("https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/backgrounds/background6.jpg");
     // Favorites
     const [favorites, setFavorites] = useState([]);
     // Modals

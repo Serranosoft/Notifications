@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     container: {
         width: wp("100%"),
         height: hp("100%"),
-        position: "relative"
+        position: "relative",
     },
     lottie: {
         width: 150,

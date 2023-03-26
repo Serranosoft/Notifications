@@ -25,9 +25,9 @@ export default function Header({setBgModalVisible }) {
 const styles = StyleSheet.create({
     container: {
         width: wp("100%"),
-        height: "7%",
-        marginTop: "3%",
-        paddingHorizontal: "5%",
+        height: hp("6%"),
+        marginTop: hp("4%"),
+        paddingHorizontal: "3%",
         alignItems: "flex-end",
         justifyContent: "flex-end",
     },

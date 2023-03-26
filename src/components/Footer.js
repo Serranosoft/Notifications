@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DataContext } from "../../utils/DataContext";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function Footer({setPracticeMode, setCatModalVisible}) {
 
@@ -33,12 +33,12 @@ export default function Footer({setPracticeMode, setCatModalVisible}) {
 const styles = StyleSheet.create({
     container: {
         width: wp("100%"),
-        height: "7%",
-        marginBottom: "3%",
+        height: hp("6%"),
+        marginBottom: hp("4%"),
+        paddingHorizontal: "3%",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: "5%",
     },
     touchable: {
         height: "100%",
