@@ -7,14 +7,14 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory }) => {
 
-    const [chosed, setChosed] = useState(false);
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         if (categories.length < 1) {
             async function fetchCategories() {
                 const {data, error} = await supabase.from("Categories").select("name");
-                data.forEach(category => setCategories(categories => categories.concat(category.name)));
+                data.forEach(category => 
+                    setCategories(categories => categories.concat({name: category.name, img: `https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/categories/${category.name.replace(/\s+/g, '_')}.png?cache2`})));
             }
             fetchCategories();
             setOtherCategories();
@@ -22,8 +22,8 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
     }, [])
     
     function setOtherCategories() {
-        setCategories(categories => categories.concat("General"))
-        setCategories(categories => categories.concat("Favoritos"));
+        setCategories(categories => categories.concat({name: "General", img: `https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/categories/General.png?cache2`}))
+        setCategories(categories => categories.concat({name: "Favoritos", img: `https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/categories/Favoritos.png?cache2`}));
     }
 
     return (
@@ -46,13 +46,12 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
                         renderItem= {({item, i}) => {
                             return (
                                 <TouchableOpacity style={styles.category} key={i} onPress={() => {
-                                    setChosed(true);
-                                    setCategory(item);
+                                    setCategory(item.name);
                                     setCatModalVisible(!catModalVisible);
                                 }}>
                                     <View>
-                                        <Image style={styles.image} /* resizeMode="cover" */ source={{ uri: `https://qebnmxnfniqfbjrbkwpx.supabase.co/storage/v1/object/public/backgrounds/categories/${item.replace(/\s+/g, '_')}.png?cache2` }} />
-                                        <Text style={styles.categoryText}>{item}</Text>
+                                        <Image style={styles.image} source={{ uri: item.img }} />
+                                        <Text style={styles.categoryText}>{item.name}</Text>
                                     </View>
                                 </TouchableOpacity>
 
@@ -63,7 +62,7 @@ export const CategoryModal = ({ setCatModalVisible, catModalVisible, setCategory
                     <TouchableOpacity
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => setCatModalVisible(!catModalVisible)}>
-                        <Text style={styles.buttonText}>Cerrar{/* {chosed ? "Aceptar" : "Cerrar"} */}</Text>
+                        <Text style={styles.buttonText}>Cerrar</Text>
                     </TouchableOpacity>
                 </View>
             </View>
