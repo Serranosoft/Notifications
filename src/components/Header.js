@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         marginTop: "3%",
         marginHorizontal: "3%",
         alignItems: "flex-end",
-        justifyContent: "flex-end",
     },
     touchable: {
         paddingVertical: 6,
