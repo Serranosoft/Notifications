@@ -17,8 +17,6 @@ export default function Home() {
 
     // Array de frases.
     const [phrasesArr, setPhrasesArr] = useState([]);
-    // Cantidad de elementos del array.
-    const [phrasesLength, setPhrasesLength] = useState(0);
     // Cantidad de frases leídas, también sirve como el índice del array para renderizar la frase
     const [phrasesReaded, setPhrasesReaded] = useState(0);
     // Longitud de la base de datos
@@ -47,18 +45,14 @@ export default function Home() {
                 favorites.length !== 0 && setPhrasesArr(favorites);
             } else {
                 fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
-                fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
+                fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, category);
             }
         }
     }, [phrasesArr])
 
-    // Cada 7 frases leidas, carga otras 10 en el array
     useEffect(() => {
         if (phrasesArr.length > 0 && category !== "Favoritos") {
             swipeVisible === true && setSwipeVisible(false);
-            if (phrasesReaded === phrasesLength - 3) {
-                fetchPhrases.getPhrases(phrasesArr, setPhrasesArr, setPhrasesLength, phrasesLength, category);
-            }
         }
     }, [phrasesReaded])
 
@@ -67,11 +61,10 @@ export default function Home() {
         if (category !== null) {
             setPhrasesArr([]);
             setPhrasesReaded(0);
-            if (category == "Favoritos") {
-                setPhrasesLength(favorites.length);
-            } else {
-                setPhrasesLength(0);
+            if (category != "Favoritos") {
                 fetchPhrases.getPhrasesLength(category).then((length) => dbLength.current = length);
+            } else {
+                dbLength.current = favorites.length
             }
         }
     }, [category])
@@ -125,34 +118,3 @@ export default function Home() {
         </>
     )
 }
-
-
-
-/* const styles = StyleSheet.create({
-    // container: {
-    //     width: wp("100%"),
-    //     height: hp("93%"),
-    //     position: "relative"
-    // },
-    animatedView: {
-        height: "100%",
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    animatedText: {
-        paddingVertical: 10,
-        paddingHorizontal: 30,
-        backgroundColor: "rgba(0,0,0,0.60)",
-        borderRadius: 15,
-        textAlign: "center",
-        fontSize: 20,
-        color: "white"
-    },
-    lottie: {
-        width: 150,
-        height: 150,
-        position: "absolute",
-        top: "15%",
-        left: "40%",
-    }
-}) */
