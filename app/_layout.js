@@ -12,7 +12,7 @@ import { AdEventType, InterstitialAd, TestIds } from "react-native-google-mobile
 import * as StoreReview from 'expo-store-review';
 
 const INTERSTITIAL_ID = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-3963345159052388/2464725979';
-const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+const interstitial = InterstitialAd.createForAdRequest("ca-app-pub-3963345159052388/2464725979", {
     requestNonPersonalizedAdsOnly: true,
     keywords: ['salud', 'autoayuda'],
 });

@@ -1,10 +1,6 @@
-import { StyleSheet } from "react-native"
-
-
 export const ui = {
     touch: {
         justifyContent: "center",
-        // alignItems: "center",
         paddingHorizontal: 16,
         borderRadius: 16,
         backgroundColor: "rgba(0,0,0,0.48)",
@@ -16,9 +12,8 @@ export const ui = {
         gap: 16,
     },
     img: {
-        // aspectRatio: 1,
+        aspectRatio: 1,
         width: 35,
-        height: 35,
     },
     text: {
         fontFamily: "Hubhead",
