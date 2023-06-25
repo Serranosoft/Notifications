@@ -11,12 +11,12 @@ export default class fetchPhrases {
         return count;
     }
 
-    static async getPhrases(arr, setArr, category) {
+    static async getPhrases(arr, updatedData, category) {
         await supabase
             .from(`random_${category.toLowerCase()}`)
             .select("phrase")
             .then((res) => {
-                setArr(res.data.map(phrase => phrase.phrase));
+                updatedData({phrasesArr: res.data.map(phrase => phrase.phrase)});
             })
     }
 

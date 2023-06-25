@@ -1,7 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { DataContext } from "../../utils/DataContext";
 
-export default function AsyncStorageContainer({setBackgroundHome, setFavorites}) {
+export default function Storage() {
+
+    const { updatedData } = useContext(DataContext);
 
     useEffect(() => {
         getBackgroundStorage();
@@ -12,7 +15,7 @@ export default function AsyncStorageContainer({setBackgroundHome, setFavorites})
         try {
             const value = await AsyncStorage.getItem("background");
             if (value !== null) {
-                setBackgroundHome(value);
+                updatedData({ backgroundHome: value })
             }
         } catch (e) {
             // error reading value
@@ -23,7 +26,7 @@ export default function AsyncStorageContainer({setBackgroundHome, setFavorites})
         try {
             const value = await AsyncStorage.getItem("favorites");
             if (value !== null) {
-                setFavorites(JSON.parse(value));
+                updatedData({ favorites: JSON.parse(value) });
             }
         } catch (e) {
             // error reading value

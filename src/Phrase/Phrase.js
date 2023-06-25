@@ -1,10 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native"
-import { TouchableOpacity } from "react-native"
 import { DataContext } from "../../utils/DataContext";
-import FavoriteContainer from "../container/FavoriteContainer";
+import FavoriteContainer from "../Favorite/FavoriteContainer";
 
-export default function Phrase({checkIfFavoriteExists, phrase}) {
+export default function Phrase({ phrase }) {
 
     const {category, practiceMode} = useContext(DataContext);
 
@@ -13,7 +12,7 @@ export default function Phrase({checkIfFavoriteExists, phrase}) {
             <Text style={styles.animatedText}>
                 { category === "Favoritos" && !phrase ? "No tienes ninguna frase favorita" : phrase }
             </Text>
-            { phrase && !practiceMode ? <FavoriteContainer checkIfFavoriteExists={checkIfFavoriteExists} /> : <></>}
+            { phrase && !practiceMode ? <FavoriteContainer phrase={phrase} /> : <></>}
         </View>
     )
 }

@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "YoSoy: Afirmaciones positivas",
+    "scheme": "myapp",
     "slug": "yosoy",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -32,7 +33,7 @@
       "package": "com.paulaymanu113.yosoy"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+        "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [
@@ -47,5 +48,9 @@
         "projectId": "e4b436f0-323e-4283-b5de-fd30ea0c3140"
       }
     }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-3963345159052388~8685957343",
+    "ios_app_id": "ca-app-pub-3963345159052388~8685957343"
   }
 }

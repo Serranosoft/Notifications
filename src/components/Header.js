@@ -1,17 +1,19 @@
 import { useContext } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { DataContext } from "../../utils/DataContext";
+import { Image } from 'expo-image';
+import { ui } from "../../utils/styles";
 
-export default function Header({setBgModalVisible }) {
+export default function Header() {
 
-    const {practiceMode} = useContext(DataContext);
+    const { practiceMode, updatedData } = useContext(DataContext);
     
     return (
         <>
             {!practiceMode ?
                 <View style={styles.container}>
-                    <TouchableOpacity style={styles.touchable} onPress={() => setBgModalVisible(true)}>
-                        <Image source={require("../../assets/pincel.png")} style={styles.icon} />
+                    <TouchableOpacity style={ui.touch} onPress={() => updatedData({bgModalVisible: true})}>
+                        <Image source={require("../../assets/pincel.png")} style={ui.img} />
                     </TouchableOpacity>
                 </View>
                 :
@@ -23,20 +25,9 @@ export default function Header({setBgModalVisible }) {
 
 const styles = StyleSheet.create({
     container: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
         flex: 1,
-        marginTop: "3%",
-        marginHorizontal: "3%",
-        alignItems: "flex-end",
-    },
-    touchable: {
-        paddingVertical: 6,
-        paddingHorizontal: 16,
-        backgroundColor: "rgba(0,0,0,0.48)",
-        borderRadius: 16,
-    },
-    icon: {
-        width: 35,
-        height: "100%",
-        resizeMode: "contain",
+        marginHorizontal: 16,
     }
 })
