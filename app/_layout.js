@@ -13,7 +13,7 @@ import * as StoreReview from 'expo-store-review';
 
 const INTERSTITIAL_ID = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-3963345159052388/2464725979';
 const interstitial = InterstitialAd.createForAdRequest("ca-app-pub-3963345159052388/2464725979", {
-    requestNonPersonalizedAdsOnly: true,
+    requestNonPersonalizedAdsOnly: false,
     keywords: ['salud', 'autoayuda'],
 });
 
@@ -53,7 +53,7 @@ export default function Layout() {
     useEffect(() => {
         if (adLoaded) {
             if (data.phrasesReaded === phrasesCount) {
-                setPhrasesCount(data.phrasesReaded + 6);
+                setPhrasesCount(data.phrasesReaded + 5);
                 interstitial.show();
                 setAdLoaded(false);
                 loadIntersitial(interstitial, setAdLoaded);
